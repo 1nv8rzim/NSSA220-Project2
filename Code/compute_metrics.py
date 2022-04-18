@@ -17,7 +17,27 @@ def compute_metrics(capture, ip):
     
     print(request_bytes_sent, request_bytes_recv, request_bytes_data_sent, request_bytes_data_recv)
     
+    rtt, data, payload = [], [], []
+    for request, reply in zip(capture.lambda_filter(lambda cap: 'Echo (ping) request' in cap.info and ip == cap.source).packets, capture.lambda_filter(lambda cap: 'Echo (ping) reply' in cap.info and ip == cap.destination).packets):
+        rtt.append((reply.time - request.time) * 1000)
+        data.append(request.length)
+        payload.append(request.length - 42)
+        
+    average_rtt = sum(rtt) / len(rtt)
+    request_throughput = sum(data) / sum(rtt)
+    request_goodput = sum(payload) / sum(rtt)
+    
+    reply_delay = []
+    for request, reply in zip(capture.lambda_filter(lambda cap: 'Echo (ping) request' in cap.info and ip == cap.destination).packets, capture.lambda_filter(lambda cap: 'Echo (ping) reply' in cap.info and ip == cap.source).packets):
+        reply_delay.append((reply.time - request.time) * 1000)
+    
+    average_reply_delay = sum(reply_delay) / len(reply_delay)
+    
+    print(average_rtt, request_throughput, request_goodput, average_reply_delay)
+    
     print()
+    
+    
 
     
 
