@@ -38,10 +38,12 @@ def compute_metrics(capture, ip):
     print(f'Echo Request Bytes Received\t\t{request_bytes_recv}')
     print(f'Echo Request Data Sent\t\t\t{request_bytes_data_sent}')
     print(f'Echo Request Data Received\t\t{request_bytes_data_recv}')
+    print()
     print(f'Average RTT (ms)\t\t\t{average_rtt}')
     print(f'Echo Request Throughput (kB/sec)\t{request_throughput}')
     print(f'Echo Request Goodput (kB/sec)\t\t{request_goodput}')
     print(f'Average Reply Delay (us)\t\t{average_reply_delay}')
+    print()
     print(f'Average Echo Request Hop Count\t\t{average_hop_count}')
     print()
     
